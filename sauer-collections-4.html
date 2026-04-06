@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hári Zoltán Ékszer – Kollekciók</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lato', Arial, sans-serif;
+      background: #fff;
+      color: #1a1a1a;
+      font-size: 14px;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* —— HEADER —— */
+    .site-header {
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+
+    .header-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      height: 84px;
+      padding: 0 48px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 400;
+      color: #333;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .nav-links a.active,
+    .nav-links a:hover { border-bottom-color: #1a1a1a; color: #1a1a1a; }
+
+    .logo-center {
+      display: flex;
+      justify-content: center;
+    }
+
+    .logo-text {
+      font-size: 26px;
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: #1a1a1a;
+    }
+
+    .nav-right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    /* —— PAGE TITLE —— */
+    .page-title {
+      padding: 30px 48px 24px;
+      border-bottom: 1px solid #e5e5e5;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    .page-title h1 {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #1a1a1a;
+    }
+
+    .page-title span {
+      font-size: 11px;
+      color: #aaa;
+      letter-spacing: 0.06em;
+    }
+
+    .collections-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .col-row {
+      display: grid;
+      grid-template-columns: 58% 42%;
+      border-bottom: 1px solid #e5e5e5;
+      min-height: 420px;
+      text-decoration: none;
+      color: #1a1a1a;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .col-row.flipped {
+      grid-template-columns: 42% 58%;
+    }
+
+    .col-row:last-child { border-bottom: none; }
+
+    .col-img {
+      position: relative;
+      overflow: hidden;
+      background: #ede9e3;
+    }
+
+    .col-row.flipped .col-img { order: 2; }
+
+    .col-img-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(160,152,142,0.18) 49px, rgba(160,152,142,0.18) 50px),
+        repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(160,152,142,0.18) 49px, rgba(160,152,142,0.18) 50px),
+        #ede9e3;
+      transition: transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+
+    .col-row:hover .col-img-inner { transform: scale(1.04); }
+
+    .col-img-inner svg {
+      width: 52px;
+      height: 52px;
+      opacity: 0.18;
+      stroke: #5a5248;
+      stroke-width: 1.2px;
+    }
+
+    .col-index {
+      position: absolute;
+      top: 20px;
+      left: 24px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: rgba(90,82,72,0.5);
+      font-weight: 300;
+      z-index: 2;
+    }
+
+    .col-row.flipped .col-index { left: auto; right: 24px; }
+
+    .col-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 52px 56px;
+      border-left: 1px solid #e5e5e5;
+      position: relative;
+      background: #fff;
+      transition: background 0.3s;
+    }
+
+    .col-row.flipped .col-text {
+      order: 1;
+      border-left: none;
+      border-right: 1px solid #e5e5e5;
+      padding: 52px 56px 52px 48px;
+    }
+
+    .col-row:hover .col-text { background: #faf8f6; }
+
+    .col-text-number {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: #bbb;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .col-text-name {
+      font-size: 32px;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: #1a1a1a;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .col-text-divider {
+      width: 32px;
+      height: 1px;
+      background: #c8b89a;
+      margin-bottom: 20px;
+    }
+
+    .col-text-desc {
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: #888;
+      line-height: 1.8;
+      margin-bottom: 36px;
+      max-width: 280px;
+    }
+
+    .col-text-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+      padding-bottom: 3px;
+      width: fit-content;
+      transition: gap 0.25s, opacity 0.2s;
+    }
+
+    .col-row:hover .col-text-cta { gap: 16px; opacity: 0.7; }
+
+    /* —— NEWSLETTER —— */
+    .newsletter {
+      background: #1a1a1a;
+      padding: 72px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .nl-left h2 {
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: #fff;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .nl-left p {
+      font-size: 12px;
+      color: #888;
+      letter-spacing: 0.07em;
+      line-height: 1.7;
+    }
+
+    .nl-right { display: flex; flex-direction: column; gap: 14px; }
+
+    .nl-form {
+      display: flex;
+    }
+
+    .nl-form input {
+      flex: 1;
+      background: transparent;
+      border: 1px solid #3a3a3a;
+      border-right: none;
+      padding: 14px 18px;
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .nl-form input::placeholder { color: #555; }
+    .nl-form input:focus { border-color: #888; }
+
+    .nl-form button {
+      background: #c8b89a;
+      border: 1px solid #c8b89a;
+      padding: 14px 26px;
+      font-family: 'Lato', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #1a1a1a;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .nl-form button:hover { background: #b8a888; }
+
+    .nl-policy {
+      font-size: 10px;
+      color: #555;
+      letter-spacing: 0.04em;
+      line-height: 1.6;
+    }
+
+    .nl-policy a { color: #888; text-decoration: underline; }
+
+    /* —— FOOTER —— */
+    footer {
+      background: #111;
+      color: #666;
+      padding: 22px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-top: 1px solid #2a2a2a;
+    }
+
+    footer a { color: #666; }
+    footer a:hover { color: #ccc; }
+    .footer-links { display: flex; gap: 28px; }
+
+    /* —— RESPONSIVE —— */
+    @media (max-width: 900px) {
+      .header-grid { grid-template-columns: auto 1fr auto; padding: 0 24px; }
+      .nav-links { display: none; }
+      .col-row, .col-row.flipped { grid-template-columns: 1fr; min-height: auto; }
+      .col-img { height: 280px; position: relative; }
+      .col-img-inner { position: absolute; }
+      .col-row.flipped .col-img { order: 0; }
+      .col-row.flipped .col-text { order: 1; border-right: none; border-left: 1px solid #e5e5e5; }
+      .col-text { padding: 36px 28px; border-left: none; border-top: 1px solid #e5e5e5; }
+      .newsletter { grid-template-columns: 1fr; padding: 48px 24px; }
+      .page-title { padding: 20px 24px; }
+      footer { padding: 18px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-grid">
+    <ul class="nav-links">
+      <li><a href="#" class="active">Kollekciók</a></li>
+      <li><a href="#">Vonalak</a></li>
+      <li><a href="kategoriak.html">Kategóriák</a></li>
+      <li><a href="#">Történet</a></li>
+    </ul>
+
+    <div class="logo-center">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <span class="logo-text">Hári Zoltán</span>
+        <span style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;font-weight:300;color:#666;">Ékszerműhelye</span>
+      </div>
+    </div>
+
+    <div class="nav-right">
+    </div>
+  </div>
+</header>
+
+<!-- PAGE TITLE -->
+<div class="page-title">
+  <h1>Kollekciók</h1>
+  <span>22 kollekció</span>
+</div>
+
+<!-- COLLECTIONS LIST -->
+<main class="collections-list" id="list"></main>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="nl-left">
+    <h2>Iratkozzon fel<br>hírlevelünkre</h2>
+    <p>Adja meg e-mail címét, hogy megkaphassa<br>híreinket és exkluzív ajánlatainkat.</p>
+  </div>
+  <div class="nl-right">
+    <div class="nl-form">
+      <input type="email" placeholder="E-mail címe"/>
+      <button type="button">Feliratkozás</button>
+    </div>
+    <p class="nl-policy">
+      Elolvastam és tudomásul vettem a személyes adataim kezelésére vonatkozó feltételeket,
+      és hozzájárulásomat adom az <a href="#">Adatvédelmi tájékoztatóban</a> leírtak szerint.
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© Hári Zoltán Ékszerműhelye</span>
+  <div class="footer-links">
+    <a href="#">Kollekciók</a>
+    <a href="#">Vonalak</a>
+    <a href="#">Kategóriák</a>
+    <a href="#">Adatvédelmi tájékoztató</a>
+  </div>
+</footer>
+
+<script>
+  const collections = [
+    { name: "Axis",                  desc: "Egy kollekció, amely az egyensúlyt és a precizitást kutatja.", img: "https://raw.githubusercontent.com/blackdeil/-kszervil-g7/main/1.webp" },
+    { name: "Brennand",              desc: "Francisco Brennand ikonikus brazil művész munkássága ihlette.", img: "https://raw.githubusercontent.com/blackdeil/-kszervil-g7/main/2.webp" },
+    { name: "MA",                    desc: "Modern formák találkoznak a kézműves mesterséggel.", img: "https://raw.githubusercontent.com/blackdeil/-kszervil-g7/main/3.webp" },
+    { name: "Ethos",                 desc: "A műhely lényege időtlen darabokká sűrítve.", img: "4.jpg" },
+    { name: "Sauer × Jason Wu",      desc: "Egyedülálló együttműködés Jason Wu tervezővel.", img: "5.jpg" },
+    { name: "Frames",                desc: "Geometria és szerkezet újragondolva finom ékszerként.", img: "6.jpg" },
+    { name: "Yam",                   desc: "Természetből fakadó organikus formák és textúrák." },
+    { name: "Organikus Absztrakció", desc: "Szabadon áramló formák a természeti szépség ünnepében." },
+    { name: "Örökség",               desc: "Több mint 80 év ékszerészeti hagyományának tisztelete." },
+    { name: "Zodiákus",              desc: "A tizenkét csillagjegy nemesfémből és drágakövekből." },
+    { name: "Fungus",                desc: "Szokatlan természeti struktúrák merész tanulmánya." },
+  ];
+
+  const imgSVG = `<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="6" y="6" width="52" height="52" rx="2"/>
+    <circle cx="21" cy="22" r="6"/>
+    <polyline points="6,44 20,30 30,40 42,26 58,46"/>
+  </svg>`;
+
+  const list = document.getElementById('list');
+
+  collections.forEach((col, i) => {
+    const row = document.createElement('a');
+    row.className = 'col-row' + (i % 2 === 1 ? ' flipped' : '');
+    row.href = '#';
+
+    const num = String(i + 1).padStart(2, '0');
+
+    const imgContent = col.img
+      ? `<img src="${col.img}" alt="${col.name}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;">`
+      : imgSVG;
+
+    row.innerHTML = `
+      <div class="col-img">
+        <span class="col-index">${num}</span>
+        <div class="col-img-inner" style="${col.img ? 'background:#fff;' : ''}">${imgContent}</div>
+      </div>
+      <div class="col-text">
+        <div class="col-text-number">${num} / 22</div>
+        <div class="col-text-name">${col.name}</div>
+        <div class="col-text-divider"></div>
+        <div class="col-text-desc">${col.desc}</div>
+        <span class="col-text-cta">Kollekció megtekintése &nbsp;→</span>
+      </div>`;
+
+    list.appendChild(row);
+  });
+</script>
+
+</body>
+</html>

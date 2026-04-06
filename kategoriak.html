@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hári Zoltán Ékszer – Kategóriák</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lato', Arial, sans-serif;
+      background: #fff;
+      color: #1a1a1a;
+      font-size: 14px;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* —— HEADER —— */
+    .site-header {
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+
+    .header-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      height: 84px;
+      padding: 0 48px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 400;
+      color: #333;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .nav-links a.active,
+    .nav-links a:hover { border-bottom-color: #1a1a1a; color: #1a1a1a; }
+
+    .logo-center {
+      display: flex;
+      justify-content: center;
+    }
+
+    .logo-text {
+      font-size: 26px;
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: #1a1a1a;
+    }
+
+    .nav-right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    /* —— PAGE TITLE —— */
+    .page-title {
+      padding: 30px 48px 24px;
+      border-bottom: 1px solid #e5e5e5;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    .page-title h1 {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #1a1a1a;
+    }
+
+    .page-title span {
+      font-size: 11px;
+      color: #aaa;
+      letter-spacing: 0.06em;
+    }
+
+    /* —— GRID —— */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-left: 1px solid #e5e5e5;
+    }
+
+    .cat-card {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: #1a1a1a;
+      border-right: 1px solid #e5e5e5;
+      border-bottom: 1px solid #e5e5e5;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .cat-card:hover { background: #faf8f6; }
+
+    /* Square image frame */
+    .cat-img {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: #ede9e3;
+    }
+
+    .cat-img-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(160,152,142,0.18) 49px, rgba(160,152,142,0.18) 50px),
+        repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(160,152,142,0.18) 49px, rgba(160,152,142,0.18) 50px),
+        #ede9e3;
+      transition: transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+
+    .cat-card:hover .cat-img-inner { transform: scale(1.04); }
+
+    .cat-img-inner img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .cat-img-inner svg {
+      width: 52px;
+      height: 52px;
+      opacity: 0.18;
+      stroke: #5a5248;
+      stroke-width: 1.2px;
+    }
+
+    /* Text box */
+    .cat-text {
+      padding: 24px 28px 28px;
+      border-top: 1px solid #e5e5e5;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cat-text-name {
+      font-size: 16px;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: #1a1a1a;
+      line-height: 1.2;
+    }
+
+    .cat-text-divider {
+      width: 24px;
+      height: 1px;
+      background: #c8b89a;
+    }
+
+    .cat-text-desc {
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: #888;
+      line-height: 1.7;
+    }
+
+    .cat-text-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+      padding-bottom: 2px;
+      width: fit-content;
+      margin-top: 6px;
+      transition: gap 0.25s, opacity 0.2s;
+    }
+
+    .cat-card:hover .cat-text-cta { gap: 14px; opacity: 0.7; }
+
+    /* —— NEWSLETTER —— */
+    .newsletter {
+      background: #1a1a1a;
+      padding: 72px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .nl-left h2 {
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: #fff;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .nl-left p {
+      font-size: 12px;
+      color: #888;
+      letter-spacing: 0.07em;
+      line-height: 1.7;
+    }
+
+    .nl-right { display: flex; flex-direction: column; gap: 14px; }
+
+    .nl-form { display: flex; }
+
+    .nl-form input {
+      flex: 1;
+      background: transparent;
+      border: 1px solid #3a3a3a;
+      border-right: none;
+      padding: 14px 18px;
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .nl-form input::placeholder { color: #555; }
+    .nl-form input:focus { border-color: #888; }
+
+    .nl-form button {
+      background: #c8b89a;
+      border: 1px solid #c8b89a;
+      padding: 14px 26px;
+      font-family: 'Lato', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #1a1a1a;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .nl-form button:hover { background: #b8a888; }
+
+    .nl-policy {
+      font-size: 10px;
+      color: #555;
+      letter-spacing: 0.04em;
+      line-height: 1.6;
+    }
+
+    .nl-policy a { color: #888; text-decoration: underline; }
+
+    /* —— FOOTER —— */
+    footer {
+      background: #111;
+      color: #666;
+      padding: 22px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-top: 1px solid #2a2a2a;
+    }
+
+    footer a { color: #666; }
+    footer a:hover { color: #ccc; }
+    .footer-links { display: flex; gap: 28px; }
+
+    /* —— RESPONSIVE —— */
+    @media (max-width: 900px) {
+      .header-grid { grid-template-columns: auto 1fr auto; padding: 0 24px; }
+      .nav-links { display: none; }
+      .categories-grid { grid-template-columns: repeat(2, 1fr); border-left: none; }
+      .page-title { padding: 20px 24px; }
+      .newsletter { grid-template-columns: 1fr; padding: 48px 24px; }
+      footer { padding: 18px 24px; }
+    }
+
+    @media (max-width: 540px) {
+      .categories-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-grid">
+    <ul class="nav-links">
+      <li><a href="sauer-collections-4.html">Kollekciók</a></li>
+      <li><a href="#">Vonalak</a></li>
+      <li><a href="kategoriak.html" class="active">Kategóriák</a></li>
+      <li><a href="#">Történet</a></li>
+    </ul>
+
+    <div class="logo-center">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <span class="logo-text">Hári Zoltán</span>
+        <span style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;font-weight:300;color:#666;">Ékszerműhelye</span>
+      </div>
+    </div>
+
+    <div class="nav-right"></div>
+  </div>
+</header>
+
+<!-- PAGE TITLE -->
+<div class="page-title">
+  <h1>Kategóriák</h1>
+  <span>6 kategória</span>
+</div>
+
+<!-- CATEGORIES GRID -->
+<main class="categories-grid">
+
+  <a href="#" class="cat-card">
+    <div class="cat-img">
+      <div class="cat-img-inner">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="52" height="52" rx="2"/><circle cx="21" cy="22" r="6"/><polyline points="6,44 20,30 30,40 42,26 58,46"/></svg>
+      </div>
+    </div>
+    <div class="cat-text">
+      <div class="cat-text-name">Gyűrűk</div>
+      <div class="cat-text-divider"></div>
+      <div class="cat-text-desc">Klasszikus és modern gyűrűk nemesfémből és drágakövekből.</div>
+      <span class="cat-text-cta">Megtekintés &nbsp;→</span>
+    </div>
+  </a>
+
+  <a href="#" class="cat-card">
+    <div class="cat-img">
+      <div class="cat-img-inner">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="52" height="52" rx="2"/><circle cx="21" cy="22" r="6"/><polyline points="6,44 20,30 30,40 42,26 58,46"/></svg>
+      </div>
+    </div>
+    <div class="cat-text">
+      <div class="cat-text-name">Nyakláncok</div>
+      <div class="cat-text-divider"></div>
+      <div class="cat-text-desc">Elegáns nyakláncok és medálok minden alkalomra.</div>
+      <span class="cat-text-cta">Megtekintés &nbsp;→</span>
+    </div>
+  </a>
+
+  <a href="#" class="cat-card">
+    <div class="cat-img">
+      <div class="cat-img-inner">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="52" height="52" rx="2"/><circle cx="21" cy="22" r="6"/><polyline points="6,44 20,30 30,40 42,26 58,46"/></svg>
+      </div>
+    </div>
+    <div class="cat-text">
+      <div class="cat-text-name">Karkötők</div>
+      <div class="cat-text-divider"></div>
+      <div class="cat-text-desc">Finom karkötők és karláncok aranyból és ezüstből.</div>
+      <span class="cat-text-cta">Megtekintés &nbsp;→</span>
+    </div>
+  </a>
+
+  <a href="#" class="cat-card">
+    <div class="cat-img">
+      <div class="cat-img-inner">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="52" height="52" rx="2"/><circle cx="21" cy="22" r="6"/><polyline points="6,44 20,30 30,40 42,26 58,46"/></svg>
+      </div>
+    </div>
+    <div class="cat-text">
+      <div class="cat-text-name">Fülbevalók</div>
+      <div class="cat-text-divider"></div>
+      <div class="cat-text-desc">Visszafogott és feltűnő fülbevalók egyaránt.</div>
+      <span class="cat-text-cta">Megtekintés &nbsp;→</span>
+    </div>
+  </a>
+
+  <a href="#" class="cat-card">
+    <div class="cat-img">
+      <div class="cat-img-inner">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="52" height="52" rx="2"/><circle cx="21" cy="22" r="6"/><polyline points="6,44 20,30 30,40 42,26 58,46"/></svg>
+      </div>
+    </div>
+    <div class="cat-text">
+      <div class="cat-text-name">Brossok</div>
+      <div class="cat-text-divider"></div>
+      <div class="cat-text-desc">Egyedi brossok és kitűzők különleges alkalmakra.</div>
+      <span class="cat-text-cta">Megtekintés &nbsp;→</span>
+    </div>
+  </a>
+
+  <a href="#" class="cat-card">
+    <div class="cat-img">
+      <div class="cat-img-inner">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="52" height="52" rx="2"/><circle cx="21" cy="22" r="6"/><polyline points="6,44 20,30 30,40 42,26 58,46"/></svg>
+      </div>
+    </div>
+    <div class="cat-text">
+      <div class="cat-text-name">Szettek</div>
+      <div class="cat-text-divider"></div>
+      <div class="cat-text-desc">Összeállított ékszerszettek harmonikus megjelenésért.</div>
+      <span class="cat-text-cta">Megtekintés &nbsp;→</span>
+    </div>
+  </a>
+
+</main>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="nl-left">
+    <h2>Iratkozzon fel<br>hírlevelünkre</h2>
+    <p>Adja meg e-mail címét, hogy megkaphassa<br>híreinket és exkluzív ajánlatainkat.</p>
+  </div>
+  <div class="nl-right">
+    <div class="nl-form">
+      <input type="email" placeholder="E-mail címe"/>
+      <button type="button">Feliratkozás</button>
+    </div>
+    <p class="nl-policy">
+      Elolvastam és tudomásul vettem a személyes adataim kezelésére vonatkozó feltételeket,
+      és hozzájárulásomat adom az <a href="#">Adatvédelmi tájékoztatóban</a> leírtak szerint.
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© Hári Zoltán Ékszerműhelye</span>
+  <div class="footer-links">
+    <a href="sauer-collections-4.html">Kollekciók</a>
+    <a href="#">Vonalak</a>
+    <a href="kategoriak.html">Kategóriák</a>
+    <a href="#">Adatvédelmi tájékoztató</a>
+  </div>
+</footer>
+
+</body>
+</html>
