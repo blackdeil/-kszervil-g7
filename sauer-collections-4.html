@@ -5,15 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Hári Zoltán Ékszer – Kollekciók</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap&subset=latin-ext" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: 'Lato', Arial, sans-serif;
+      font-family: 'Inter', Arial, sans-serif;
       background: #fff;
       color: #1a1a1a;
       font-size: 14px;
+      font-synthesis: none;
+      -webkit-font-smoothing: antialiased;
     }
 
     a { text-decoration: none; color: inherit; }
@@ -33,6 +40,7 @@
       align-items: center;
       height: 84px;
       padding: 0 48px;
+      position: relative;
     }
 
     .nav-links {
@@ -49,23 +57,40 @@
       color: #333;
       padding-bottom: 2px;
       border-bottom: 1px solid transparent;
-      transition: border-color 0.2s, color 0.2s;
+      transition: border-color 0.2s, color 0.2s, transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+      display: inline-block;
     }
 
     .nav-links a.active,
     .nav-links a:hover { border-bottom-color: #1a1a1a; color: #1a1a1a; }
 
+    .nav-links a:hover { transform: scale(1.02); }
+
     .logo-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
       justify-content: center;
+      transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+
+    .logo-center:hover {
+      transform: translateX(-50%) scale(1.02);
     }
 
     .logo-text {
+      font-family: 'Lato', serif;
       font-size: 26px;
       font-weight: 300;
       letter-spacing: 0.4em;
       text-transform: uppercase;
       color: #1a1a1a;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
     }
 
     .nav-right {
@@ -310,6 +335,63 @@
 
     .nl-policy a { color: #888; text-decoration: underline; }
 
+    /* —— BACK TO TOP —— */
+    .back-to-top {
+      position: fixed;
+      bottom: 32px;
+      left: 32px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.38) 0%,
+        rgba(255,255,255,0.14) 50%,
+        rgba(255,255,255,0.24) 100%
+      );
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow:
+        0 4px 24px rgba(0,0,0,0.10),
+        0 1.5px 6px rgba(0,0,0,0.08),
+        inset 0 1px 1px rgba(255,255,255,0.8),
+        inset 0 -1px 1px rgba(0,0,0,0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s, transform 0.3s, box-shadow 0.3s;
+      z-index: 400;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 8px 32px rgba(0,0,0,0.13),
+        0 2px 8px rgba(0,0,0,0.08),
+        inset 0 1px 1px rgba(255,255,255,0.9),
+        inset 0 -1px 1px rgba(0,0,0,0.04);
+    }
+
+    .back-to-top svg {
+      width: 18px;
+      height: 18px;
+      stroke: rgba(30,30,30,0.75);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 1px 1px rgba(255,255,255,0.6));
+    }
+
     /* —— FOOTER —— */
     footer {
       background: #111;
@@ -330,80 +412,286 @@
     footer a:hover { color: #ccc; }
     .footer-links { display: flex; gap: 28px; }
 
+    /* —— TÖRTÉNET —— */
+    .tortenet {
+      padding: 96px 48px 0;
+      border-top: 1px solid #e5e5e5;
+      scroll-margin-top: 84px;
+    }
+
+    .tortenet-title {
+      text-align: center;
+      font-size: 32px;
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: #1a1a1a;
+      margin-bottom: 40px;
+    }
+
+    .tortenet-text {
+      max-width: 680px;
+      margin: 0 auto 64px;
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: #666;
+      line-height: 1.9;
+      text-align: center;
+    }
+
+    .tortenet-img {
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      background: #ede9e3;
+    }
+
+    .tortenet-img-placeholder {
+      width: 100%;
+      height: 480px;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(160,152,142,0.18) 49px, rgba(160,152,142,0.18) 50px),
+        repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(160,152,142,0.18) 49px, rgba(160,152,142,0.18) 50px),
+        #ede9e3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tortenet-img-placeholder svg {
+      width: 64px;
+      height: 64px;
+      opacity: 0.18;
+      stroke: #5a5248;
+      stroke-width: 1.2px;
+    }
+
+    /* —— HAMBURGER —— */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 300;
+      align-items: center;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      border: 1.5px solid #1a1a1a;
+      background: transparent;
+      transition: all 0.3s;
+    }
+
+    .hamburger.open span { border-color: #1a1a1a; background: #1a1a1a; }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      z-index: 250;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+    }
+
+    .mobile-nav.open { display: flex; }
+
+    .mobile-nav a {
+      font-size: 13px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 400;
+      color: #333;
+      padding-bottom: 3px;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .mobile-nav a:hover,
+    .mobile-nav a.active { border-bottom-color: #1a1a1a; color: #1a1a1a; }
+
+    /* —— ELÉRHETŐSÉGEK —— */
+    .elerhetoseg {
+      padding: 80px 48px;
+      border-top: 1px solid #e5e5e5;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .elerhetoseg-left h2 {
+      font-size: 21.5px;
+      font-weight: 400;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #1a1a1a;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .insta-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: #333;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .insta-link:hover { color: #c8b89a; }
+
+    .insta-link svg {
+      width: 28px;
+      height: 28px;
+      fill: currentColor;
+    }
+
+    .elerhetoseg-map {
+      width: 100%;
+      height: 380px;
+      border: 1px solid #e5e5e5;
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      .elerhetoseg { grid-template-columns: 1fr; padding: 48px 24px; gap: 32px; }
+      .elerhetoseg-map { height: 260px; }
+    }
+
     /* —— RESPONSIVE —— */
     @media (max-width: 900px) {
-      .header-grid { grid-template-columns: auto 1fr auto; padding: 0 24px; }
-      .nav-links { display: none; }
       .col-row, .col-row.flipped { grid-template-columns: 1fr; min-height: auto; }
       .col-img { height: 280px; position: relative; }
       .col-img-inner { position: absolute; }
       .col-row.flipped .col-img { order: 0; }
       .col-row.flipped .col-text { order: 1; border-right: none; border-left: 1px solid #e5e5e5; }
       .col-text { padding: 36px 28px; border-left: none; border-top: 1px solid #e5e5e5; }
-      .newsletter { grid-template-columns: 1fr; padding: 48px 24px; }
       .page-title { padding: 20px 24px; }
-      footer { padding: 18px 24px; }
+      footer { padding: 18px 24px; flex-direction: column; align-items: flex-start; }
+      .footer-links { flex-wrap: wrap; gap: 16px; }
+      .tortenet { padding: 64px 24px 0; }
+      .tortenet-img-placeholder { height: 260px; }
+    }
+
+    @media (max-width: 1440px) {
+      .header-grid { padding: 0 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
     }
   </style>
 </head>
 <body>
 
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
 <!-- HEADER -->
 <header class="site-header">
   <div class="header-grid">
-    <ul class="nav-links">
-      <li><a href="#" class="active">Kollekciók</a></li>
-      <li><a href="#">Vonalak</a></li>
-      <li><a href="kategoriak.html">Kategóriák</a></li>
-      <li><a href="#">Történet</a></li>
-    </ul>
+    <div class="nav-left">
+      <ul class="nav-links">
+        <li><a href="#" class="active">Kollekciók</a></li>
+        <li><a href="kategoriak.html">Kategóriák</a></li>
+        <li><a href="#tortenet">Történetünk</a></li>
+      <li><a href="#elerhetoseg">Elérhetőségeink</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menü">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
 
     <div class="logo-center">
-      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-        <span class="logo-text">Hári Zoltán</span>
-        <span style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;font-weight:300;color:#666;">Ékszerműhelye</span>
-      </div>
+      <a href="sauer-collections-4.html" style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <span class="logo-text" style="display:block;text-align:center;padding-left:0.4em;">Hári Zoltán</span>
+        <span style="display:block;text-align:center;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;font-weight:300;color:#666;padding-left:0.3em;">Ékszerműhelye</span>
+      </a>
     </div>
 
-    <div class="nav-right">
-    </div>
+    <div class="nav-right"></div>
   </div>
 </header>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav" id="mobile-nav">
+  <a href="#" class="active" onclick="closeMobileNav()">Kollekciók</a>
+  <a href="kategoriak.html" onclick="closeMobileNav()">Kategóriák</a>
+  <a href="#tortenet" onclick="closeMobileNav()">Történet</a>
+  <a href="#elerhetoseg" onclick="closeMobileNav()">Elérhetőségeink</a>
+</nav>
 
 <!-- PAGE TITLE -->
 <div class="page-title">
   <h1>Kollekciók</h1>
-  <span>22 kollekció</span>
 </div>
 
 <!-- COLLECTIONS LIST -->
 <main class="collections-list" id="list"></main>
 
-<!-- NEWSLETTER -->
-<section class="newsletter">
-  <div class="nl-left">
-    <h2>Iratkozzon fel<br>hírlevelünkre</h2>
-    <p>Adja meg e-mail címét, hogy megkaphassa<br>híreinket és exkluzív ajánlatainkat.</p>
+<!-- TÖRTÉNET -->
+<section class="tortenet" id="tortenet">
+  <h2 class="tortenet-title">Történetünk</h2>
+  <p class="tortenet-text">
+    Hári Zoltán ékszerműhelye évtizedek óta a kézműves ékszerkészítés szenvedélyéből táplálkozik.
+    Minden darab egyedi, gondosan megtervezett alkotás, amely a hagyományos ötvösmesterség
+    és a modern formavilág találkozásából születik. Műhelyünkben a nemesfémek és drágakövek
+    harmóniája életre kel — a viselőjük személyiségét és stílusát tükrözve.
+  </p>
+  <div class="tortenet-img-placeholder">
+    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="6" y="6" width="52" height="52" rx="2"/>
+      <circle cx="21" cy="22" r="6"/>
+      <polyline points="6,44 20,30 30,40 42,26 58,46"/>
+    </svg>
   </div>
-  <div class="nl-right">
-    <div class="nl-form">
-      <input type="email" placeholder="E-mail címe"/>
-      <button type="button">Feliratkozás</button>
-    </div>
-    <p class="nl-policy">
-      Elolvastam és tudomásul vettem a személyes adataim kezelésére vonatkozó feltételeket,
-      és hozzájárulásomat adom az <a href="#">Adatvédelmi tájékoztatóban</a> leírtak szerint.
-    </p>
+</section>
+
+<!-- ELÉRHETŐSÉGEK -->
+<section class="elerhetoseg" id="elerhetoseg">
+  <div class="elerhetoseg-left">
+    <h2>Elérhetőségeink</h2>
+    <a href="https://www.instagram.com/ekszervilag/" target="_blank" class="insta-link">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+      </svg>
+      @ekszervilag
+    </a>
+    <a href="tel:+36703176836" class="insta-link" style="margin-top:16px;">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+      </svg>
+      +36 70 317 6836
+    </a>
   </div>
+  <iframe
+    class="elerhetoseg-map"
+    src="https://maps.google.com/maps?q=Mária+tér+2,Budapest,Hungary+1011&output=embed"
+    allowfullscreen
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade">
+  </iframe>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <span>© Hári Zoltán Ékszerműhelye</span>
   <div class="footer-links">
-    <a href="#">Kollekciók</a>
-    <a href="#">Vonalak</a>
-    <a href="#">Kategóriák</a>
     <a href="#">Adatvédelmi tájékoztató</a>
   </div>
 </footer>
@@ -444,20 +732,38 @@
 
     row.innerHTML = `
       <div class="col-img">
-        <span class="col-index">${num}</span>
-        <div class="col-img-inner" style="${col.img ? 'background:#fff;' : ''}">${imgContent}</div>
+<div class="col-img-inner" style="${col.img ? 'background:#fff;' : ''}">${imgContent}</div>
       </div>
       <div class="col-text">
-        <div class="col-text-number">${num} / 22</div>
-        <div class="col-text-name">${col.name}</div>
+<div class="col-text-name">${col.name}</div>
         <div class="col-text-divider"></div>
         <div class="col-text-desc">${col.desc}</div>
-        <span class="col-text-cta">Kollekció megtekintése &nbsp;→</span>
       </div>`;
 
     list.appendChild(row);
   });
 </script>
 
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+  });
+
+  function closeMobileNav() {
+    hamburger.classList.remove('open');
+    mobileNav.classList.remove('open');
+  }
+</script>
+<script>
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    const half = document.documentElement.scrollHeight / 2 - window.innerHeight;
+    backToTop.classList.toggle('visible', window.scrollY > half);
+  });
+</script>
 </body>
 </html>

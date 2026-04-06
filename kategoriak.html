@@ -6,11 +6,12 @@
   <title>Hári Zoltán Ékszer – Kategóriák</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Lato', Arial, sans-serif;
+      font-family: 'Inter', Arial, sans-serif;
       background: #fff;
       color: #1a1a1a;
       font-size: 14px;
@@ -49,18 +50,30 @@
       color: #333;
       padding-bottom: 2px;
       border-bottom: 1px solid transparent;
-      transition: border-color 0.2s, color 0.2s;
+      transition: border-color 0.2s, color 0.2s, transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+      display: inline-block;
     }
 
     .nav-links a.active,
     .nav-links a:hover { border-bottom-color: #1a1a1a; color: #1a1a1a; }
 
+    .nav-links a:hover { transform: scale(1.02); }
+
     .logo-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
       justify-content: center;
+      transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+
+    .logo-center:hover {
+      transform: translateX(-50%) scale(1.02);
     }
 
     .logo-text {
+      font-family: 'Lato', serif;
       font-size: 26px;
       font-weight: 300;
       letter-spacing: 0.4em;
@@ -101,8 +114,9 @@
     .categories-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      border-left: 1px solid #e5e5e5;
+      gap: 12px;
+      padding: 12px;
+      border-left: none;
     }
 
     .cat-card {
@@ -302,14 +316,73 @@
     footer a:hover { color: #ccc; }
     .footer-links { display: flex; gap: 28px; }
 
+    /* —— HAMBURGER —— */
+    .nav-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 300;
+      align-items: center;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      border: 1.5px solid #1a1a1a;
+      background: transparent;
+      transition: all 0.3s;
+    }
+
+    .hamburger.open span { border-color: #1a1a1a; background: #1a1a1a; }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      z-index: 250;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+    }
+
+    .mobile-nav.open { display: flex; }
+
+    .mobile-nav a {
+      font-size: 13px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 400;
+      color: #333;
+      padding-bottom: 3px;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .mobile-nav a:hover,
+    .mobile-nav a.active { border-bottom-color: #1a1a1a; color: #1a1a1a; }
+
     /* —— RESPONSIVE —— */
     @media (max-width: 900px) {
-      .header-grid { grid-template-columns: auto 1fr auto; padding: 0 24px; }
+      .header-grid { padding: 0 24px; }
       .nav-links { display: none; }
+      .hamburger { display: flex; }
       .categories-grid { grid-template-columns: repeat(2, 1fr); border-left: none; }
       .page-title { padding: 20px 24px; }
-      .newsletter { grid-template-columns: 1fr; padding: 48px 24px; }
-      footer { padding: 18px 24px; }
+      footer { padding: 18px 24px; flex-direction: column; align-items: flex-start; }
+      .footer-links { flex-wrap: wrap; gap: 16px; }
     }
 
     @media (max-width: 540px) {
@@ -322,18 +395,22 @@
 <!-- HEADER -->
 <header class="site-header">
   <div class="header-grid">
-    <ul class="nav-links">
-      <li><a href="sauer-collections-4.html">Kollekciók</a></li>
-      <li><a href="#">Vonalak</a></li>
-      <li><a href="kategoriak.html" class="active">Kategóriák</a></li>
-      <li><a href="#">Történet</a></li>
-    </ul>
+    <div class="nav-left">
+      <ul class="nav-links">
+        <li><a href="sauer-collections-4.html">Kollekciók</a></li>
+        <li><a href="sauer-collections-4.html#tortenet">Történetünk</a></li>
+        <li><a href="sauer-collections-4.html#elerhetoseg">Elérhetőségeink</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menü">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
 
     <div class="logo-center">
-      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+      <a href="sauer-collections-4.html" style="display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
         <span class="logo-text">Hári Zoltán</span>
         <span style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;font-weight:300;color:#666;">Ékszerműhelye</span>
-      </div>
+      </a>
     </div>
 
     <div class="nav-right"></div>
@@ -435,34 +512,35 @@
 
 </main>
 
-<!-- NEWSLETTER -->
-<section class="newsletter">
-  <div class="nl-left">
-    <h2>Iratkozzon fel<br>hírlevelünkre</h2>
-    <p>Adja meg e-mail címét, hogy megkaphassa<br>híreinket és exkluzív ajánlatainkat.</p>
-  </div>
-  <div class="nl-right">
-    <div class="nl-form">
-      <input type="email" placeholder="E-mail címe"/>
-      <button type="button">Feliratkozás</button>
-    </div>
-    <p class="nl-policy">
-      Elolvastam és tudomásul vettem a személyes adataim kezelésére vonatkozó feltételeket,
-      és hozzájárulásomat adom az <a href="#">Adatvédelmi tájékoztatóban</a> leírtak szerint.
-    </p>
-  </div>
-</section>
-
 <!-- FOOTER -->
 <footer>
   <span>© Hári Zoltán Ékszerműhelye</span>
   <div class="footer-links">
-    <a href="sauer-collections-4.html">Kollekciók</a>
-    <a href="#">Vonalak</a>
-    <a href="kategoriak.html">Kategóriák</a>
     <a href="#">Adatvédelmi tájékoztató</a>
   </div>
 </footer>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav" id="mobile-nav">
+  <a href="sauer-collections-4.html" onclick="closeMobileNav()">Kollekciók</a>
+  <a href="sauer-collections-4.html#tortenet" onclick="closeMobileNav()">Történet</a>
+  <a href="sauer-collections-4.html#elerhetoseg" onclick="closeMobileNav()">Elérhetőségeink</a>
+</nav>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+  });
+
+  function closeMobileNav() {
+    hamburger.classList.remove('open');
+    mobileNav.classList.remove('open');
+  }
+</script>
 
 </body>
 </html>
